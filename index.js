@@ -18,6 +18,12 @@ exports.run = function(runner, specs) {
 
   return runner.runTestPreparer().then(function() {
     var config = runner.getConfig();
+    if (typeof config.cucumberOpts === 'function') {
+      config.cucumberOpts = config.cucumberOpts(runner, specs);
+    }
+    if (typeof config.capabilities.cucumberOpts === 'function') {
+      config.capabilities.cucumberOpts = config.capabilities.cucumberOpts(runner, specs);
+    }
     var opts = assign({}, config.cucumberOpts, config.capabilities.cucumberOpts);
     state.initialize(runner, results, opts.strict);
 
